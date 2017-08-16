@@ -3,13 +3,28 @@ console.log("Sanity Check: JS is working!");
 $(document).ready(function(){
   getAllAlbums()
 
+  function showAllAlbums(albums){
+    albums.forEach(function(album){
+    $('.list-group').append(`
+      <li class='list-group-item' id=${album._id}>
+        <p class='list-title'>${album.name}</p>
+        <div class='list-btns'>
+          <button type='button' class='btn btn-default view-btn'>View</button>
+          <button type='button' class='btn btn-default edit-btn'>Edit</button>
+          <button type='button' class='btn btn-default delete-btn'>Delete</button>
+        </div>
+      </li>
+      `)
+    })
+  }
+
   function getAllAlbums(){
     $.ajax({
       method: 'GET',
       url: 'http://mutably.herokuapp.com/albums'
     }).done(function(allAlbums){
       //pass the result to view function
-      console.log(allAlbums.albums)
+      showAllAlbums(allAlbums.albums)
     }).catch(function(error){
       console.log(error)
     })

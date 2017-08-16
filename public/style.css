@@ -2,3 +2,13 @@
 body {
   background: #f2cbc5;
 }
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-title {
+  margin: 0;
+}
