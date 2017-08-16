@@ -52,4 +52,14 @@ $(document).ready(function(){
     })
   }
 
+  function deleteAlbum(id){
+    $.ajax({
+      method: 'DELETE',
+      url:`http://mutably.herokuapp.com/albums/${id}`
+    }).done(function(albumToDelete){
+      //maybe call function to remove the view but might already be deleted.
+      console.log(albumToDelete)
+    })
+  }
+
 });
