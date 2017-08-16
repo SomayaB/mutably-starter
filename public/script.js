@@ -1,7 +1,7 @@
 console.log("Sanity Check: JS is working!");
 
 $(document).ready(function(){
-  getAllAlbums()
+  // getAllAlbums()
 
   function getAllAlbums(){
     $.ajax({
@@ -9,10 +9,21 @@ $(document).ready(function(){
       contentType: 'application/json',
       url: 'http://mutably.herokuapp.com/albums'
     }).done(function(result){
+      //pass the result to view function
       console.log(result.albums)
     }).catch(function(error){
       console.log(error)
     })
   }
 
+  function getOneAlbum(id){
+    $.ajax({
+      method: 'GET',
+      url: `http://mutably.herokuapp.com/albums/${id}`
+    }).done(function(result){
+      console.log(result)
+    }).catch(function(error){
+      console.log(error)
+    })
+  }
 });
