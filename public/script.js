@@ -5,16 +5,40 @@ $(document).ready(function(){
 
   function showAllAlbums(albums){
     albums.forEach(function(album){
-    $('.list-group').append(`
-      <li class='list-group-item' id=${album._id}>
-        <p class='list-title'>${album.name}</p>
-        <div class='list-btns'>
-          <button type='button' class='btn btn-default view-btn'>View</button>
-          <button type='button' class='btn btn-default edit-btn'>Edit</button>
-          <button type='button' class='btn btn-default delete-btn'>Delete</button>
+      $('.list-group').append(`
+        <li class='list-group-item' id=${album._id}>
+          <p class='list-title'>${album.name}</p>
+          <div class='list-btns'>
+            <button type='button' class='btn btn-default view-btn'>View</button>
+            <button type='button' class='btn btn-default edit-btn'>Edit</button>
+            <button type='button' class='btn btn-default delete-btn'>Delete</button>
+          </div>
+          `)
+      $('.list-group').append(`
+      <div class='view-card'>
+        <div class='row'>
+          <div class='col-sm-9 details-box'>
+            <div class=card-block>
+              <h2 class='card-title'>${album.name}</h2>
+              <p class='card-text'>Artist: ${album.artistName}</p>
+              <p class='card-text'>Release Date: ${album.releaseDate}</p>
+              <p class='card-text'>Genres: ${Object.values(album.genres).join(', ')}</p>
+              <button class='btn btn-primary close-btn'>Close</button>
+            </div>
+          </div>
         </div>
-      </li>
-      `)
+      </div>
+    </li>
+    `)
+    })
+    showViewCard()
+  }
+
+  function showViewCard(){
+    $('.view-btn').on('click', function(event){
+      event.stopPropagation();
+      event.preventDefault()
+      $(this).closest('.list-group-item').next().find('.card-block').slideToggle();
     })
   }
 
@@ -23,7 +47,6 @@ $(document).ready(function(){
       method: 'GET',
       url: 'http://mutably.herokuapp.com/albums'
     }).done(function(allAlbums){
-      //pass the result to view function
       showAllAlbums(allAlbums.albums)
     }).catch(function(error){
       console.log(error)

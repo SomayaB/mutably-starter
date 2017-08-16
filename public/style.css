@@ -12,3 +12,8 @@ body {
 .list-title {
   margin: 0;
 }
+
+.card-block {
+  display: none;
+  padding: 40px;
+}
