@@ -6,7 +6,6 @@ $(document).ready(function(){
   function getAllAlbums(){
     $.ajax({
       method: 'GET',
-      contentType: 'application/json',
       url: 'http://mutably.herokuapp.com/albums'
     }).done(function(allAlbums){
       //pass the result to view function
@@ -32,8 +31,22 @@ $(document).ready(function(){
       method: 'POST',
       url: 'http://mutably.herokuapp.com/albums',
       data: JSON.stringify(albumDetails)
-    }).done(function(addedBook){
-      console.log(addedBook);
+    }).done(function(addedAlbum){
+      //call function to append content to album list
+      console.log(addedAlbum)
+    }).catch(function(error){
+      console.log(error)
+    })
+  }
+
+  function editAlbumDetails(id, editedAlbumDetails){
+    $.ajax({
+      method: 'PUT',
+      url:`http://mutably.herokuapp.com/albums/${id}`,
+      data: JSON.stringify(updatedAlbumDetails)
+    }).done(function(editedAlbum){
+      //call function to update single album view
+        console.log(editedAlbum)
     }).catch(function(error){
       console.log(error)
     })
