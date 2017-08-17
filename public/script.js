@@ -42,19 +42,31 @@ $(document).ready(function(){
     })
   }
 
-
-  ;(function addNewAlbum(){ //might change name cause this is just to handle the click event it doesnt really add yet.
+  ;(function openNewAlbumModal(){
     $('.add-btn').on('click', function(event){
       event.stopPropagation()
       event.preventDefault()
-      console.log('clicked add button')
-      openNewAlbumModal()
+      $('.modal-new-album').css({display: 'block'})
     })
   })()
 
-  function openNewAlbumModal(){
-    $('.modal-new-album').css({display: 'block'})
-  }
+  console.log('title?', $('.save-btn').parent().parent().closest('.modal-body').find('input#title'));
+
+  ;(function getNewAlbumDetails(){
+    $('.save-btn').on('click', function(){
+      var title = $(this).parent().prev().find('input#title').val()
+      var artist = $(this).parent().prev().find('input#artist').val()
+      var date = $(this).parent().prev().find('input#date').val()
+      var genres = $(this).parent().prev().find('input#genres').val()
+      var albumDetails = {
+        title,
+        artist,
+        date,
+        genres
+      }
+      addNewAlbum(albumDetails)
+    })
+  })()
 
   ;(function closeNewAlbumModal(){
     $('.modal-close').on('click', function(){
@@ -62,7 +74,7 @@ $(document).ready(function(){
     })
     $('.modal-new-album').on('click', function(event){
 
-      if(event.target == $('.modal-new-album')[0]) {
+      if(event.target === $('.modal-new-album')[0]) {
         $('.modal-new-album').css({display: 'none'})
       }
     })
@@ -98,8 +110,7 @@ $(document).ready(function(){
       url: 'http://mutably.herokuapp.com/albums',
       data: JSON.stringify(albumDetails)
     }).done(function(albumToAdd){
-      addNewAlbum(albumToAdd)
-      console.log(albumToAdd)
+      addNewAlbumToList(albumToAdd)
     }).catch(function(error){
       console.log(error)
     })
