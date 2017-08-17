@@ -7,7 +7,7 @@ $(document).ready(function(){
     albums.forEach(function(album){
       $('.list-group').append(`
         <li class='list-group-item' id=${album._id}>
-          <p class='list-title'>${album.name}</p>
+          <p class='list-name'>${album.name}</p>
           <div class='list-btns'>
             <button type='button' class='btn btn-default view-btn'>View</button>
             <button type='button' class='btn btn-default edit-btn'>Edit</button>
@@ -19,7 +19,7 @@ $(document).ready(function(){
         <div class='row'>
           <div class='col-sm-9 details-box'>
             <div class=card-block>
-              <h2 class='card-title'>${album.name}</h2>
+              <h2 class='card-name'>${album.name}</h2>
               <p class='card-text'>Artist: ${album.artistName}</p>
               <p class='card-text'>Release Date: ${album.releaseDate}</p>
               <p class='card-text'>Genres: ${Object.values(album.genres).join(', ')}</p>
@@ -50,23 +50,23 @@ $(document).ready(function(){
     })
   })()
 
-  console.log('title?', $('.save-btn').parent().parent().closest('.modal-body').find('input#title'));
 
   ;(function getNewAlbumDetails(){
     $('.save-btn').on('click', function(){
-      var title = $(this).parent().prev().find('input#title').val()
-      var artist = $(this).parent().prev().find('input#artist').val()
-      var date = $(this).parent().prev().find('input#date').val()
+      var name = $(this).parent().prev().find('input#name').val()
+      var artistName = $(this).parent().prev().find('input#artist').val()
+      var releaseDate = $(this).parent().prev().find('input#date').val()
       var genres = $(this).parent().prev().find('input#genres').val()
       var albumDetails = {
-        title,
-        artist,
-        date,
+        name,
+        artistName,
+        releaseDate,
         genres
       }
       addNewAlbum(albumDetails)
     })
   })()
+
 
   ;(function closeNewAlbumModal(){
     $('.modal-close').on('click', function(){
@@ -105,12 +105,14 @@ $(document).ready(function(){
   }
 
   function addNewAlbum(albumDetails){
+    console.log('album details, before post', albumDetails);
     $.ajax({
       method: 'POST',
       url: 'http://mutably.herokuapp.com/albums',
-      data: JSON.stringify(albumDetails)
-    }).done(function(albumToAdd){
-      addNewAlbumToList(albumToAdd)
+      data: albumDetails //don't need to stringify?
+    }).done(function(){
+      getAllAlbums()
+      $('.modal-new-album').hide()
     }).catch(function(error){
       console.log(error)
     })
