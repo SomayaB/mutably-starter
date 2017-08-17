@@ -36,12 +36,37 @@ $(document).ready(function(){
 
   function showViewCard(){
     $('.view-btn').on('click', function(event){
-      event.stopPropagation();
+      event.stopPropagation()
       event.preventDefault()
       $(this).closest('.list-group-item').next().find('.card-block').slideToggle();
     })
   }
 
+
+  ;(function addNewAlbum(){ //might change name cause this is just to handle the click event it doesnt really add yet.
+    $('.add-btn').on('click', function(event){
+      event.stopPropagation()
+      event.preventDefault()
+      console.log('clicked add button')
+      openNewAlbumModal()
+    })
+  })()
+
+  function openNewAlbumModal(){
+    $('.modal-new-album').css({display: 'block'})
+  }
+
+  ;(function closeNewAlbumModal(){
+    $('.modal-close').on('click', function(){
+      $('.modal-new-album').css({display: 'none'})
+    })
+    $('.modal-new-album').on('click', function(event){
+
+      if(event.target == $('.modal-new-album')[0]) {
+        $('.modal-new-album').css({display: 'none'})
+      }
+    })
+  })()
 
 
 //Fetching data
@@ -72,9 +97,9 @@ $(document).ready(function(){
       method: 'POST',
       url: 'http://mutably.herokuapp.com/albums',
       data: JSON.stringify(albumDetails)
-    }).done(function(addedAlbum){
-      //call function to append content to album list
-      console.log(addedAlbum)
+    }).done(function(albumToAdd){
+      addNewAlbum(albumToAdd)
+      console.log(albumToAdd)
     }).catch(function(error){
       console.log(error)
     })
