@@ -42,6 +42,9 @@ $(document).ready(function(){
     })
   }
 
+
+
+//Fetching data
   function getAllAlbums(){
     $.ajax({
       method: 'GET',

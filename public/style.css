@@ -1,6 +1,10 @@
 /*Custom styles here*/
+html {
+   background-image: url('http://www.itstherub.com/wp-content/uploads/2017/07/TNN-4.jpg')
+}
 body {
-  background: #f2cbc5;
+  /*background: #f2cbc5;*/
+  background: none;
 }
 
 .list-group-item {
@@ -16,4 +20,15 @@ body {
 .card-block {
   display: none;
   padding: 40px;
+}
+
+/*.add-btn {
+  margin: 0;
+  float: right;
+}*/
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
