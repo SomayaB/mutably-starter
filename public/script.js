@@ -35,16 +35,59 @@ $(document).ready(function(){
       </div>
     </li>
     `)
+    console.log(`${album.releaseDate}`);
+    $('.list-group').append(`
+    <div class='edit-card'>
+      <div class='row'>
+        <div class='col-sm-9 details-box'>
+          <div class=card-block>
+          <h2>Edit Album</h2>
+          <form class='add-form'>
+           <div class='input-section'>
+             <label for='name' class='col-sm-4 col-form-label'>Title</label>
+             <div class='form-input col-sm-9'>
+               <input type='text' class='form-control' id='name' value='${album.name}'>
+             </div>
+            </div>
+           <div class='input-section'>
+             <label for='artist' class='col-sm-4 col-form-label'>Artist</label>
+             <div class='form-input col-sm-9'>
+               <input type='text' class='form-control' id='artist' value='${album.artistName}'>
+             </div>
+            </div>
+           <div class='input-section'>
+             <label for='date' class='col-sm-4 col-form-label'>Release Date</label>
+             <div class='form-input col-sm-9'>
+               <input type='text' class='form-control' id='date' value='${album.releaseDate}'>
+             </div>
+           </div>
+           <div class='input-section'>
+             <label for='genres' class='col-sm-4 col-form-label'>Genres</label>
+             <div class='form-input col-sm-9'>
+               <input type='text' class='form-control' id='genres' value='${Object.values(album.genres).join(', ')}'>
+             </div>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+  `)
   }
 
-  //maybe button on event listeners on the document itself?
+
+  $(document).on('click', '.edit-btn', function(event){
+    event.preventDefault()
+    $(this).closest('.list-group-item').next().next().find('.card-block').slideToggle();
+  })
+
+
   $(document).on('click', '.view-btn', function(event){
-    console.log('anything?');
     event.preventDefault()
     $(this).closest('.list-group-item').next().find('.card-block').slideToggle();
   })
 
-
+  //put all buttons on document instead of IIFEs?
   ;(function openNewAlbumModal(){
     $('.add-btn').on('click', function(event){
       event.stopPropagation()
