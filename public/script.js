@@ -3,8 +3,13 @@ console.log("Sanity Check: JS is working!");
 $(document).ready(function(){
   getAllAlbums()
 
-  function showAllAlbums(albums){
+  function displayInitialList(albums){
     albums.forEach(function(album){
+      displayAlbum(album)
+    })
+  }
+
+  function displayAlbum(album){
       $('.list-group').append(`
         <li class='list-group-item' id=${album._id}>
           <p class='list-name'>${album.name}</p>
@@ -30,17 +35,15 @@ $(document).ready(function(){
       </div>
     </li>
     `)
-    })
-    showViewCard()
   }
 
-  function showViewCard(){
-    $('.view-btn').on('click', function(event){
-      event.stopPropagation()
-      event.preventDefault()
-      $(this).closest('.list-group-item').next().find('.card-block').slideToggle();
-    })
-  }
+  //maybe button on event listeners on the document itself?
+  $(document).on('click', '.view-btn', function(event){
+    console.log('anything?');
+    event.preventDefault()
+    $(this).closest('.list-group-item').next().find('.card-block').slideToggle();
+  })
+
 
   ;(function openNewAlbumModal(){
     $('.add-btn').on('click', function(event){
@@ -52,7 +55,8 @@ $(document).ready(function(){
 
 
   ;(function getNewAlbumDetails(){
-    $('.save-btn').on('click', function(){
+    $('.save-btn').on('click', function(event){
+      event.preventDefault()
       var name = $(this).parent().prev().find('input#name').val()
       var artistName = $(this).parent().prev().find('input#artist').val()
       var releaseDate = $(this).parent().prev().find('input#date').val()
@@ -87,7 +91,7 @@ $(document).ready(function(){
       method: 'GET',
       url: 'http://mutably.herokuapp.com/albums'
     }).done(function(allAlbums){
-      showAllAlbums(allAlbums.albums)
+      displayInitialList(allAlbums.albums)
     }).catch(function(error){
       console.log(error)
     })
@@ -110,9 +114,9 @@ $(document).ready(function(){
       method: 'POST',
       url: 'http://mutably.herokuapp.com/albums',
       data: albumDetails //don't need to stringify?
-    }).done(function(){
-      getAllAlbums()
+    }).done(function(album){
       $('.modal-new-album').hide()
+      displayAlbum(album)
     }).catch(function(error){
       console.log(error)
     })

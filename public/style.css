@@ -84,6 +84,13 @@ body {
   height:200px;
 }
 
+.add-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+}
+
 .input-section {
   display: flex;
   flex-direction: row;
@@ -91,12 +98,6 @@ body {
   height: 40px;
 }
 
-.add-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  height: 100%;
-}
 
 .col-form-label {
     padding: 0;
