@@ -10,7 +10,7 @@
   <body class="container">
     <div class="col-sm-8 col-sm-offset-2">
       <nav class="navbar navbar-default">
-        <a class="navbar-brand" href="/">Current Music</a>
+        <a class="navbar-brand" href="/">Favorite Albums</a>
         <button type='button' class='btn btn-default add-btn'>Add new album</button>
       </nav>
       <div class="panel panel-default">
@@ -20,5 +20,42 @@
         </ul>
       </div>
     </div>
+    <div class="modal-new-album">
+        <div class="modal-new-album-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Add new album<span class="modal-close">&times;</span></h2>
+          </div>
+          <div class="modal-body">
+              <form class='add-form'>
+               <div class='input-section'>
+                 <label for='name' class='col-sm-4 col-form-label'>Title</label>
+                 <div class='form-input col-sm-9'>
+                   <input type='text' class='form-control' id='name'>
+                 </div>
+                </div>
+               <div class='input-section'>
+                 <label for='artist' class='col-sm-4 col-form-label'>Artist</label>
+                 <div class='form-input col-sm-9'>
+                   <input type='text' class='form-control' id='artist'>
+                 </div>
+                </div>
+               <div class='input-section'>
+                 <label for='date' class='col-sm-4 col-form-label'>Release Date</label>
+                 <div class='form-input col-sm-9'>
+                   <input type='text' class='form-control' id='date'>
+                 </div>
+               </div>
+               <div class='input-section'>
+                 <label for='genres' class='col-sm-4 col-form-label'>Genres</label>
+                 <div class='form-input col-sm-9'>
+                   <input type='text' class='form-control' id='genres'>
+                 </div>
+               </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default save-btn">Save</button>
+          </div>
+
+      </div>
   </body>
 </html>

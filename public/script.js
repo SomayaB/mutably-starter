@@ -3,11 +3,16 @@ console.log("Sanity Check: JS is working!");
 $(document).ready(function(){
   getAllAlbums()
 
-  function showAllAlbums(albums){
+  function displayInitialList(albums){
     albums.forEach(function(album){
+      displayAlbum(album)
+    })
+  }
+
+  function displayAlbum(album){
       $('.list-group').append(`
         <li class='list-group-item' id=${album._id}>
-          <p class='list-title'>${album.name}</p>
+          <p class='list-name'>${album.name}</p>
           <div class='list-btns'>
             <button type='button' class='btn btn-default view-btn'>View</button>
             <button type='button' class='btn btn-default edit-btn'>Edit</button>
@@ -19,7 +24,7 @@ $(document).ready(function(){
         <div class='row'>
           <div class='col-sm-9 details-box'>
             <div class=card-block>
-              <h2 class='card-title'>${album.name}</h2>
+              <h2 class='card-name'>${album.name}</h2>
               <p class='card-text'>Artist: ${album.artistName}</p>
               <p class='card-text'>Release Date: ${album.releaseDate}</p>
               <p class='card-text'>Genres: ${Object.values(album.genres).join(', ')}</p>
@@ -30,18 +35,54 @@ $(document).ready(function(){
       </div>
     </li>
     `)
-    })
-    showViewCard()
   }
 
-  function showViewCard(){
-    $('.view-btn').on('click', function(event){
-      event.stopPropagation();
+  //maybe button on event listeners on the document itself?
+  $(document).on('click', '.view-btn', function(event){
+    console.log('anything?');
+    event.preventDefault()
+    $(this).closest('.list-group-item').next().find('.card-block').slideToggle();
+  })
+
+
+  ;(function openNewAlbumModal(){
+    $('.add-btn').on('click', function(event){
+      event.stopPropagation()
       event.preventDefault()
-      $(this).closest('.list-group-item').next().find('.card-block').slideToggle();
+      $('.modal-new-album').css({display: 'block'})
     })
-  }
+  })()
 
+
+  ;(function getNewAlbumDetails(){
+    $('.save-btn').on('click', function(event){
+      event.preventDefault()
+      var name = $(this).parent().prev().find('input#name').val()
+      var artistName = $(this).parent().prev().find('input#artist').val()
+      var releaseDate = $(this).parent().prev().find('input#date').val()
+      var genres = $(this).parent().prev().find('input#genres').val()
+      var albumDetails = {
+        name,
+        artistName,
+        releaseDate,
+        genres
+      }
+      addNewAlbum(albumDetails)
+    })
+  })()
+
+
+  ;(function closeNewAlbumModal(){
+    $('.modal-close').on('click', function(){
+      $('.modal-new-album').css({display: 'none'})
+    })
+    $('.modal-new-album').on('click', function(event){
+
+      if(event.target === $('.modal-new-album')[0]) {
+        $('.modal-new-album').css({display: 'none'})
+      }
+    })
+  })()
 
 
 //Fetching data
@@ -50,7 +91,7 @@ $(document).ready(function(){
       method: 'GET',
       url: 'http://mutably.herokuapp.com/albums'
     }).done(function(allAlbums){
-      showAllAlbums(allAlbums.albums)
+      displayInitialList(allAlbums.albums)
     }).catch(function(error){
       console.log(error)
     })
@@ -68,13 +109,14 @@ $(document).ready(function(){
   }
 
   function addNewAlbum(albumDetails){
+    console.log('album details, before post', albumDetails);
     $.ajax({
       method: 'POST',
       url: 'http://mutably.herokuapp.com/albums',
-      data: JSON.stringify(albumDetails)
-    }).done(function(addedAlbum){
-      //call function to append content to album list
-      console.log(addedAlbum)
+      data: albumDetails //don't need to stringify?
+    }).done(function(album){
+      $('.modal-new-album').hide()
+      displayAlbum(album)
     }).catch(function(error){
       console.log(error)
     })
