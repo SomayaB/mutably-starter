@@ -127,8 +127,22 @@ $(document).ready(function(){
     //bug updated cards toggle weirdly
   })
 
-  function getEditAlbumDetails(id){
+  $(document).on('click', '.delete-btn', function(event){
+    event.preventDefault()
+    const id = $(this).parent().parent().attr('id')
+    $(this).closest('.list-group-item').next().remove()
+    $(this).closest('.list-group-item').next().next().remove()
+    console.log('id when clicking',id);
+    deleteAlbum(id)
+  })
 
+  function removeAlbumDisplay(id){
+    $(`#${id}`).hide('slow', function () {
+    $(this).remove()
+    })
+  }
+
+  function getEditAlbumDetails(id){
       var name = $(this).parent().parent().find('input#name').val()
       var artistName = $(this).parent().parent().find('input#artist').val()
       var releaseDate = $(this).parent().parent().find('input#date').val()
@@ -233,12 +247,12 @@ $(document).ready(function(){
   }
 
   function deleteAlbum(id){
+    console.log('id in ajax', id);
     $.ajax({
       method: 'DELETE',
       url:`http://mutably.herokuapp.com/albums/${id}`
-    }).done(function(albumToDelete){
-      //maybe call function to remove the view but might already be deleted.
-      console.log(albumToDelete)
+    }).done(function(){
+      removeAlbumDisplay(id)
     })
   }
 
