@@ -35,7 +35,6 @@ $(document).ready(function(){
       </div>
     </li>
     `)
-    console.log(`${album.releaseDate}`);
     $('.list-group').append(`
     <div class='edit-card'>
       <div class='row'>
@@ -67,6 +66,9 @@ $(document).ready(function(){
                <input type='text' class='form-control' id='genres' value='${Object.values(album.genres).join(', ')}'>
              </div>
            </div>
+           <div class='edit-footer'>
+           <button class='btn btn-primary save-edit-btn'>Save</button>
+           </div>
           </div>
         </div>
       </div>
@@ -75,17 +77,71 @@ $(document).ready(function(){
   `)
   }
 
-
-  $(document).on('click', '.edit-btn', function(event){
-    event.preventDefault()
-    $(this).closest('.list-group-item').next().next().find('.card-block').slideToggle();
-  })
-
+  function displayUpdatedAlbum(id, updatedAlbum){
+    $(document).find(`#${id}`).html(`
+      <p class='list-title'>${updatedAlbum.name}</p>
+      <div class='list-btns'>
+        <button type='button' class='btn btn-default view-btn'>View</button>
+        <button type='button' class='btn btn-default edit-btn'>Edit</button>
+        <button type='button' class='btn btn-default delete-btn'>Delete</button>
+      </div>
+    `)
+   $(document).find(`#${id}`).next().find('.card-block').html(`
+    <div class='view-card'>
+      <div class='row'>
+        <div class='col-sm-9 details-box'>
+          <div class=card-block>
+            <h2 class='card-name'>${updatedAlbum.name}</h2>
+            <p class='card-text'>Artist: ${updatedAlbum.artistName}</p>
+            <p class='card-text'>Release Date: ${updatedAlbum.releaseDate}</p>
+            <p class='card-text'>Genres: ${Object.values(updatedAlbum.genres).join(', ')}</p>
+            <button class='btn btn-primary close-btn'>Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </li>
+  `)
+  }
 
   $(document).on('click', '.view-btn', function(event){
     event.preventDefault()
-    $(this).closest('.list-group-item').next().find('.card-block').slideToggle();
+    $(this).closest('.list-group-item').next().find('.card-block').slideToggle()
   })
+
+  $(document).on('click', '.edit-btn', function(event){
+    event.preventDefault()
+    $(this).closest('.list-group-item').next().next().find('.card-block').slideToggle()
+    //turn edit button into save button
+  })
+
+  $(document).on('click', '.save-edit-btn', function(event){
+    event.preventDefault()
+
+    //better way of getting this? closest not working
+    const id = $(this).parent().parent().parent().parent().parent().parent().prev().prev().attr('id')
+    // $(this).parent().parent().parent().parent().parent().parent().hide()
+    getEditAlbumDetails.call(this, id)
+    //turn edit button into save button
+    //bug once save button is clicked edit button isn't working anymore
+    //bug updated cards toggle weirdly
+  })
+
+  function getEditAlbumDetails(id){
+
+      var name = $(this).parent().parent().find('input#name').val()
+      var artistName = $(this).parent().parent().find('input#artist').val()
+      var releaseDate = $(this).parent().parent().find('input#date').val()
+      var genres = $(this).parent().parent().find('input#genres').val()
+      var albumDetails = {
+        name,
+        artistName,
+        releaseDate,
+        genres
+      }
+      editAlbumDetails(id, albumDetails)
+
+  }
 
   //put all buttons on document instead of IIFEs?
   ;(function openNewAlbumModal(){
@@ -152,7 +208,6 @@ $(document).ready(function(){
   }
 
   function addNewAlbum(albumDetails){
-    console.log('album details, before post', albumDetails);
     $.ajax({
       method: 'POST',
       url: 'http://mutably.herokuapp.com/albums',
@@ -169,10 +224,9 @@ $(document).ready(function(){
     $.ajax({
       method: 'PUT',
       url:`http://mutably.herokuapp.com/albums/${id}`,
-      data: JSON.stringify(updatedAlbumDetails)
+      data: editedAlbumDetails
     }).done(function(editedAlbum){
-      //call function to update single album view
-        console.log(editedAlbum)
+      displayUpdatedAlbum(id, editedAlbum)
     }).catch(function(error){
       console.log(error)
     })
