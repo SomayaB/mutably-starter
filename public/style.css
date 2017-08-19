@@ -5,6 +5,7 @@ html {
 body {
   /*background: #f2cbc5;*/
   background: none;
+  position: fixed;
 }
 
 .list-group-item {

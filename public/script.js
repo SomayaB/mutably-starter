@@ -240,6 +240,7 @@ $(document).ready(function(){
       url:`http://mutably.herokuapp.com/albums/${id}`,
       data: editedAlbumDetails
     }).done(function(editedAlbum){
+      alert('Album edited successfully')
       displayUpdatedAlbum(id, editedAlbum)
     }).catch(function(error){
       console.log(error)
