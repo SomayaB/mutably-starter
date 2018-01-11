@@ -28,7 +28,6 @@ $(document).ready(function(){
               <p class='card-text'>Artist: ${album.artistName}</p>
               <p class='card-text'>Release Date: ${album.releaseDate}</p>
               <p class='card-text'>Genres: ${Object.values(album.genres).join(', ')}</p>
-              <button class='btn btn-primary close-btn'>Close</button>
             </div>
           </div>
         </div>
